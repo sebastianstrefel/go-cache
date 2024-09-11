@@ -110,7 +110,7 @@ func (c *cache) AddOrGet(k string, x interface{}, d time.Duration) interface{} {
 	}
 	c.set(k, x, d)
 	c.mu.Unlock()
-	return k
+	return x
 }
 
 // Set a new value for the cache key only if it already exists, and the existing
