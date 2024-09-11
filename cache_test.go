@@ -1124,6 +1124,18 @@ func TestAdd(t *testing.T) {
 	}
 }
 
+func TestAddOrGet(t *testing.T) {
+	tc := New(DefaultExpiration, 0)
+	value := tc.AddOrGet("foo", "bar", DefaultExpiration)
+	if value != "bar" {
+		t.Error("Couldn't add foo even though it shouldn't exist")
+	}
+	value = tc.AddOrGet("foo", "baz", DefaultExpiration)
+	if value != "bar" {
+		t.Error("Successfully added another foo when it should have returned an error")
+	}
+}
+
 func TestReplace(t *testing.T) {
 	tc := New(DefaultExpiration, 0)
 	err := tc.Replace("foo", "bar", DefaultExpiration)

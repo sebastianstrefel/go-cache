@@ -101,6 +101,18 @@ func (c *cache) Add(k string, x interface{}, d time.Duration) error {
 	return nil
 }
 
+func (c *cache) AddOrGet(k string, x interface{}, d time.Duration) interface{} {
+	c.mu.Lock()
+	item, found := c.get(k)
+	if found {
+		c.mu.Unlock()
+		return item
+	}
+	c.set(k, x, d)
+	c.mu.Unlock()
+	return k
+}
+
 // Set a new value for the cache key only if it already exists, and the existing
 // item hasn't expired. Returns an error otherwise.
 func (c *cache) Replace(k string, x interface{}, d time.Duration) error {
